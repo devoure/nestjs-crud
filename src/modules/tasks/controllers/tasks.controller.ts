@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Delete, Param, Query, Body } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Param, Query, Body, ParseIntPipe } from '@nestjs/common';
 import { TasksService } from '../services/tasks.service';
 
 @Controller('tasks')
@@ -11,7 +11,7 @@ export class TasksController {
   }
 
   @Get(':id')
-  getTask(@Param() params: any) {
+  getTask(@Param(ParseIntPipe) params: any) {
     return this.taskService.findTask(+params.id);
   }
 
