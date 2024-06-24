@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { UpdateTaskDto } from '../dtos/update-task.dto';
+import { CreateTaskDto } from '../dtos/create-task.dto';
 
 @Injectable()
 export class TasksService {
@@ -41,7 +43,7 @@ export class TasksService {
     return this.tasks.find((task) => task.id === id);
   }
 
-  addTask(task: { name: string, status: 'DONE' | 'PENDING' }) {
+  addTask(task: CreateTaskDto) {
     const tasksById = this.tasks.sort((a, b) => b.id - a.id);
 
     const newTask = {
@@ -54,7 +56,7 @@ export class TasksService {
     return newTask;
   }
 
-  updateTask(id: number, updatedTask: { name: string, status: 'DONE' | 'PENDING' }) {
+  updateTask(id: number, updatedTask: UpdateTaskDto) {
     this.tasks.map((task) => {
       if (task.id === id) {
         return { ...task, ...updatedTask };
