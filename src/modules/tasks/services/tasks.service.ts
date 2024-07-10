@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { UpdateTaskDto } from '../dtos/update-task.dto';
 import { CreateTaskDto } from '../dtos/create-task.dto';
 
@@ -32,15 +32,26 @@ export class TasksService {
     },
   ];
 
-  findTasks(status?: 'DONE' | 'PENDING') {
+  findTasks(status: 'DONE' | 'PENDING') {
+    console.log(">>>>2 ", typeof status);
+    console.log(">TAS ", this.tasks);
     if (status) {
+      console.log(">TAS IF", this.tasks);
       return this.tasks.filter((task) => task.status === status);
+
     }
     return this.tasks;
   }
 
   findTask(id: number) {
-    return this.tasks.find((task) => task.id === id);
+    console.log("HIT")
+    const task = this.tasks.find((task) => task.id === id);
+
+    if (task != undefined) {
+      return task;
+    }
+
+    throw new HttpException('Task with id not found', HttpStatus.NOT_FOUND);
   }
 
   addTask(task: CreateTaskDto) {
