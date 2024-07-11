@@ -32,19 +32,14 @@ export class TasksService {
     },
   ];
 
-  findTasks(status: 'DONE' | 'PENDING') {
-    console.log(">>>>2 ", typeof status);
-    console.log(">TAS ", this.tasks);
+  findTasks(status: string) {
     if (status) {
-      console.log(">TAS IF", this.tasks);
       return this.tasks.filter((task) => task.status === status);
-
     }
     return this.tasks;
   }
 
   findTask(id: number) {
-    console.log("HIT")
     const task = this.tasks.find((task) => task.id === id);
 
     if (task != undefined) {
