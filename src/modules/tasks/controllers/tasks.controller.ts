@@ -19,17 +19,21 @@ export class TasksController {
   @Get(':id')
   @UseFilters(new HttpExceptionFilter())
   getTask(@Param('id', ParseIntPipe) id: number) {
-    return this.taskService.findTask(+id);
+    return this.taskService.findTask(id);
   }
 
   @Post('add')
+  @UseFilters(new HttpExceptionFilter())
+  @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
   addTask(@Body() task: CreateTaskDto) {
     return this.taskService.addTask(task);
   }
 
   @Patch('update/:id')
-  updateTask(@Param('id') id: string, @Body() task: UpdateTaskDto) {
-    return this.taskService.updateTask(+id, task);
+  @UseFilters(new HttpExceptionFilter())
+  @UsePipes(new ValidationPipe())
+  updateTask(@Param('id', ParseIntPipe) id: number, @Body() task: UpdateTaskDto) {
+    return this.taskService.updateTask(id, task);
   }
 
   @Delete('delete/:id')

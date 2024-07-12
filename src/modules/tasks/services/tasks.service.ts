@@ -63,13 +63,13 @@ export class TasksService {
   }
 
   updateTask(id: number, updatedTask: UpdateTaskDto) {
-    this.tasks.map((task) => {
-      if (task.id === id) {
-        return { ...task, ...updatedTask };
-      }
-      return task;
-    });
-
+    let taskToBeUpdated = {};
+    try {
+      taskToBeUpdated = this.findTask(id);
+    } catch (err) {
+      throw new HttpException(err, HttpStatus.NOT_FOUND);
+    }
+    this.tasks = this.tasks.map((task)=> task.id === taskToBeUpdated["id"] ? {...task, ...updatedTask} : task);
     return this.findTask(id);
   }
 
