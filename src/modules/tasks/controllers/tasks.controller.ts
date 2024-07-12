@@ -4,6 +4,7 @@ import { CreateTaskDto } from '../dtos/create-task.dto';
 import { UpdateTaskDto } from '../dtos/update-task.dto';
 import { TasksFilterDto } from '../dtos/tasks-filter.dto';
 import { HttpExceptionFilter } from '../utils/http-exceptions.filters';
+import { CustomValidationPipe } from '../utils/custom-validation-pipe';
 
 @Controller('tasks')
 export class TasksController {
@@ -37,7 +38,9 @@ export class TasksController {
   }
 
   @Delete('delete/:id')
-  deleteTask(@Param('id') id: string) {
-    return this.taskService.deleteTask(+id);
+  @UseFilters(new HttpExceptionFilter())
+  @UsePipes(new CustomValidationPipe())
+  deleteTask(@Param('id') id: number) {
+    return this.taskService.deleteTask(id);
   }
 }
